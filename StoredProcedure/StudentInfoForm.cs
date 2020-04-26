@@ -50,7 +50,7 @@ namespace StoredProcedure
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            if(this.isUpdate)
+            if (this.isUpdate)
             {
                 //if Data is already updated then the user message and reload the fresh data for update
                 if(IfDataNotUpdated(OriginalRowVersion, GetCurrentRowVersion()))
@@ -232,22 +232,18 @@ namespace StoredProcedure
         {
             return rbFemale.Checked ? (int) Gender.Female :
                 rbMale.Checked ? (int) Gender.Female : (int) Gender.NoSelection;
-            if(rbMale.Checked)
-            {
-                return (int)Gender.Male;
-            }
-            if (rbFemale.Checked)
-            {
-                return (int)Gender.Female;
-            }
-            return (int)Gender.NoSelection;
+            // if(rbMale.Checked)
+            // {
+            //     return (int)Gender.Male;
+            // }
+            // if (rbFemale.Checked)
+            // {
+            //     return (int)Gender.Female;
+            // }
+            // return (int)Gender.NoSelection;
         }
 
-        private void btnClose_Click(object sender, EventArgs e)
-        {
-
-            this.Close();
-        }
+        private void btnClose_Click(object sender, EventArgs e) => this.Close();
 
         private void StudentInfoForm_Load(object sender, EventArgs e)
         {
@@ -429,22 +425,23 @@ namespace StoredProcedure
 
         private void dtpDOB_ValueChanged(object sender, EventArgs e)
         {
-            if(dtpDOB.Value == dtpDOB.MinDate)
-            {
-                dtpDOB.CustomFormat = " ";
-            }
-            else
-            {
-                dtpDOB.CustomFormat = "dd/MM/yyyy";
-            }
+            dtpDOB.CustomFormat = dtpDOB.Value != dtpDOB.MinDate ? "dd/MM/yyyy" : "";
+
+            // if(dtpDOB.Value == dtpDOB.MinDate)
+            // {
+            //     dtpDOB.CustomFormat = " ";
+            // }
+            // else
+            // {
+            //     dtpDOB.CustomFormat = "dd/MM/yyyy";
+            // }
+
         }
 
         private void dtpDOB_KeyDown(object sender, KeyEventArgs e)
         {
-            if((e.KeyCode == Keys.Back) || (e.KeyCode == Keys.Delete))
-            {
-                dtpDOB.CustomFormat = " ";
-            }
+            if ((e.KeyCode != Keys.Back) && (e.KeyCode != Keys.Delete)) return;
+            dtpDOB.CustomFormat = "";
         }
 
         private void Time_ValueChanged(object sender, EventArgs e)
@@ -461,23 +458,22 @@ namespace StoredProcedure
         private void GetCustomTimeFormat(object sender, string format)
         {
             DateTimePicker dtp = (DateTimePicker)sender;
+            dtp.CustomFormat = dtp.Value != dtp.MinDate ? format : "";
 
-            if(dtp.Value == dtp.MinDate)
-            {
-                dtp.CustomFormat = " ";
-            }
-            else
-            {
-                dtp.CustomFormat = format;
-            }
+            // if(dtp.Value == dtp.MinDate)
+            // {
+            //     dtp.CustomFormat = " ";
+            // }
+            // else
+            // {
+            //     dtp.CustomFormat = format;
+            // }
         }
 
         private void dtpStart_KeyDown(object sender, KeyEventArgs e)
         {
-            if((e.KeyCode == Keys.Back) || (e.KeyCode == Keys.Delete))
-            {
-                GetCustomTimeFormat(sender, " ");
-            }
+            if ((e.KeyCode == Keys.Back) && (e.KeyCode == Keys.Delete)) return;
+            GetCustomTimeFormat(sender, " ");
         }
 
         private void cbCity_SelectedIndexChanged(object sender, EventArgs e)
